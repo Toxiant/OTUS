@@ -1,3 +1,5 @@
+Part:1 Build the Network and Configure Basic Device Settings
+
 c. Assign a device name to the router.
 R1(config)#hostname R1
 
@@ -61,6 +63,13 @@ R1#wr
 k. Set the clock on the router.
 R1(config)#clock timezone Moscow +3 0
 *Apr  8 20:20:30.623: %SYS-6-CLOCKUPDATE: System clock has been updated from 23:40:30 Moscow Sat Apr 8 2023 to 23:20:30 Moscow Sat Apr 8 2023, configured from console by console.
+
+Completed the same commands for S1 and S2
+
+
+
+
+
 
 
 
