@@ -1,4 +1,4 @@
-##Part:1 Build the Network and Configure Basic Device Settings<br>
+## Part:1 Build the Network and Configure Basic Device Settings
 
 c. Assign a device name to the router.<br>
 R1(config)#hostname R1<br>
@@ -53,9 +53,9 @@ end<br>
 
 i. Create a banner that warns anyone accessing the device that unauthorized access is prohibited.<br>
 R1(config)#banner login $ <br>
-/**************************************************************************
-*      Attention! Unauthorized access to this device is prohibited.      *
-**************************************************************************$/
+/**************************************************************************/
+/*      Attention! Unauthorized access to this device is prohibited.      */
+/**************************************************************************$/
 
 j. Save the running configuration to the startup configuration file.<br>
 R1#wr<br>
