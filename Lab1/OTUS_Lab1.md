@@ -68,7 +68,28 @@ Completed the same commands for S1 and S2<br>
 
 ##Part:2 Create VLANs and Assign Switch Ports
 
+###Addressing Table
+|Device|Interface|IP Address|Subnet Mask|Default Gateway|
+|:----:|:-------:|:--------:|:---------:|:-------------:|
+|R1|G0/0.3|192.168.3.1|255.255.255.0|N/A|
+||G0/0.4|192.168.4.1|255.255.255.0|N/A|
+||G0/0.8|N/A|N/A|N/A|
+|S1|VLAN 3|192.168.3.11|255.255.255.0|192.168.3.1|
+|S2|VLAN 3|192.168.3.12|255.255.255.0|192.168.3.1|
+|PC-A|NIC|192.168.3.3|255.255.255.0|192.168.3.1|
+|PC-B|NIC|192.168.4.3|255.255.255.0|192.168.4.1|
 
+###VLAN Table
+|VLAN|Name|Interface Assigned|
+|:-|:-|:-|
+|3|Management|S1: VLAN 3<br> S2: VLAN 3<br>S1: Gi0/2|
+|4|Operations|S2: Gi0/1|
+|7|ParkingLot|S1: Gi0/3, Gi1/0, Gi1/1, Gi1/2, Gi1/3<br> S2: Gi0/2, Gi0/3, Gi1/0, Gi1/1, Gi1/2, Gi1/3|
+|:8|Native|N/A|
+
+####: Assign VLANs to the correct switch interfaces.
+>show vlan
+![](show_vlan.png)
 
 
 
