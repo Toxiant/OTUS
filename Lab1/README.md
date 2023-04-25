@@ -93,24 +93,24 @@ Completed the same commands for S1 and S2<br>
 
 ## Part:3 Configure an 802.1Q Trunk Between the Switches
 >show interfaces trunk
-![](show interfaces trunk.png)
+![](show_interfaces_trunk.png)
 
 ## Part:4 Configure Inter-VLAN Routing on the Router
 >show ip interface brief 
-![](show ip interface brief.png)
+![](show_ip_interface_brief.png)
 
 ## Part:4 Verify Inter-VLAN Routing is Working
 >Ping from PC-A to its default gateway
-![](Ping from PC-A to its default gateway.png)
+![](Ping_from_PC-A_to_its_default_gateway.png)
 
 >Ping from PC-A to PC-B
-![](Ping from PC-A to PC-B.png)
+![](Ping_from_PC-A_to_PC-B.png)
 
 >Ping from PC-A to S2
-![](Ping from PC-A to S2.png)
+![](Ping_from_PC-A_to_S2.png)
 
 >From the command prompt on PC-B, issue the tracert command to the address of PC-A.
-![](trace from PC-B to PC-A.png)
+![](trace_from_PC-B_to_PC-A.png)
 
 What intermediate IP addresses are shown in the results?<br>
 
