@@ -1,6 +1,6 @@
 ## Part:1 Build the Network and Configure Basic Device Settings
 
-#### c. Assign a device name to the router.<
+#### c. Assign a device name to the router.
 R1(config)#hostname R1<br>
 
 #### d. Disable DNS lookup to prevent the router from attempting to translate incorrectly entered commands as though they were host names.
@@ -87,15 +87,32 @@ Completed the same commands for S1 and S2<br>
 |7|ParkingLot|S1: Gi0/3, Gi1/0, Gi1/1, Gi1/2, Gi1/3<br> S2: Gi0/2, Gi0/3, Gi1/0, Gi1/1, Gi1/2, Gi1/3|
 |:8|Native|N/A|
 
-#### : Assign VLANs to the correct switch interfaces.
+####  Assign VLANs to the correct switch interfaces.
 >show vlan
 ![](show_vlan.png)
 
+## Part:3 Configure an 802.1Q Trunk Between the Switches
+>show interfaces trunk
+![](show interfaces trunk.png)
 
+## Part:4 Configure Inter-VLAN Routing on the Router
+>show ip interface brief 
+![](show ip interface brief.png)
 
+## Part:4 Verify Inter-VLAN Routing is Working
+>Ping from PC-A to its default gateway
+![](Ping from PC-A to its default gateway.png)
 
+>Ping from PC-A to PC-B
+![](Ping from PC-A to PC-B.png)
 
+>Ping from PC-A to S2
+![](Ping from PC-A to S2.png)
 
+>From the command prompt on PC-B, issue the tracert command to the address of PC-A.
+![](trace from PC-B to PC-A.png)
 
+What intermediate IP addresses are shown in the results?<br>
 
+The result showed us intermediate IP our gateway.
 
