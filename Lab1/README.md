@@ -1,5 +1,8 @@
 ## Part:1 Build the Network and Configure Basic Device Settings
 
+>SHEME
+![](EVE-Sheme.png)
+
 #### c. Assign a device name to the router.
 R1(config)#hostname R1<br>
 
@@ -67,8 +70,6 @@ R1(config)#clock timezone Moscow +3 0<br>
 Completed the same commands for S1 and S2<br>
 
 ## Part:2 Create VLANs and Assign Switch Ports
-
-![](EVE-Sheme.png)
 
 ### Addressing Table
 |Device|Interface|IP Address|Subnet Mask|Default Gateway|
