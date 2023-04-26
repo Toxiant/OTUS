@@ -68,6 +68,8 @@ Completed the same commands for S1 and S2<br>
 
 ## Part:2 Create VLANs and Assign Switch Ports
 
+![](EVE-Sheme.png)
+
 ### Addressing Table
 |Device|Interface|IP Address|Subnet Mask|Default Gateway|
 |:----:|:-------:|:--------:|:---------:|:-------------:|
@@ -79,6 +81,34 @@ Completed the same commands for S1 and S2<br>
 |PC-A|NIC|192.168.3.3|255.255.255.0|192.168.3.1|
 |PC-B|NIC|192.168.4.3|255.255.255.0|192.168.4.1|
 
+R1#show run
+!
+interface GigabitEthernet0/0.3
+ encapsulation dot1Q 3
+ ip address 192.168.3.1 255.255.255.0
+!
+interface GigabitEthernet0/0.4
+ encapsulation dot1Q 4
+ ip address 192.168.4.1 255.255.255.0
+!
+interface GigabitEthernet0/0.8
+ encapsulation dot1Q 8
+
+Switch1#show run
+!
+interface Vlan3
+ ip address 192.168.3.11 255.255.255.0
+!
+ip route 0.0.0.0 0.0.0.0 192.168.3.1
+
+Switch2#show run
+!
+interface Vlan3
+ ip address 192.168.3.12 255.255.255.0
+!
+ip route 0.0.0.0 0.0.0.0 192.168.3.1
+
+
 ### VLAN Table
 |VLAN|Name|Interface Assigned|
 |:-|:-|:-|
@@ -86,6 +116,55 @@ Completed the same commands for S1 and S2<br>
 |4|Operations|S2: Gi0/1|
 |7|ParkingLot|S1: Gi0/3, Gi1/0, Gi1/1, Gi1/2, Gi1/3<br> S2: Gi0/2, Gi0/3, Gi1/0, Gi1/1, Gi1/2, Gi1/3|
 |:8|Native|N/A|
+
+Switch1#show run
+!
+!
+interface GigabitEthernet0/0
+ switchport trunk allowed vlan 3,4,8
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 8
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 3,4,8
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 8
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ switchport access vlan 3
+ switchport mode access
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ switchport access vlan 7
+ switchport mode access
+ shutdown
+ negotiation auto
+!
+
+Switch2#show run
+!
+interface GigabitEthernet0/0
+ switchport trunk allowed vlan 3,4,8
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 8
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ switchport access vlan 4
+ switchport mode access
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ switchport access vlan 7
+ switchport mode access
+ shutdown
+ negotiation auto
 
 ####  Assign VLANs to the correct switch interfaces.
 >show vlan
