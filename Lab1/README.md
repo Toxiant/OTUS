@@ -1,6 +1,6 @@
 ## Part:1 Build the Network and Configure Basic Device Settings
 
->SHEME
+>SHEME<br>
 ![](EVE-Sheme.png)
 
 #### c. Assign a device name to the router.
@@ -168,28 +168,28 @@ interface GigabitEthernet0/2<br>
  negotiation auto<br>
 
 ####  Assign VLANs to the correct switch interfaces.
->show vlan
+>show vlan<br>
 ![](show_vlan.png)
 
 ## Part:3 Configure an 802.1Q Trunk Between the Switches
->show interfaces trunk
+>show interfaces trunk<br>
 ![](show_interfaces_trunk.png)
 
 ## Part:4 Configure Inter-VLAN Routing on the Router
->show ip interface brief 
+>show ip interface brief<br> 
 ![](show_ip_interface_brief.png)
 
 ## Part:4 Verify Inter-VLAN Routing is Working
->Ping from PC-A to its default gateway
+>Ping from PC-A to its default gateway<br>
 ![](Ping_from_PC-A_to_its_default_gateway.png)
 
->Ping from PC-A to PC-B
+>Ping from PC-A to PC-B<br>
 ![](Ping_from_PC-A_to_PC-B.png)
 
->Ping from PC-A to S2
+>Ping from PC-A to S2<br>
 ![](Ping_from_PC-A_to_S2.png)
 
->From the command prompt on PC-B, issue the tracert command to the address of PC-A.
+>From the command prompt on PC-B, issue the tracert command to the address of PC-A.<br>
 ![](trace_from_PC-B_to_PC-A.png)
 
 What intermediate IP addresses are shown in the results?<br>
