@@ -81,32 +81,32 @@ Completed the same commands for S1 and S2<br>
 |PC-A|NIC|192.168.3.3|255.255.255.0|192.168.3.1|
 |PC-B|NIC|192.168.4.3|255.255.255.0|192.168.4.1|
 
-R1#show run
-!
-interface GigabitEthernet0/0.3
- encapsulation dot1Q 3
- ip address 192.168.3.1 255.255.255.0
-!
-interface GigabitEthernet0/0.4
- encapsulation dot1Q 4
- ip address 192.168.4.1 255.255.255.0
-!
-interface GigabitEthernet0/0.8
- encapsulation dot1Q 8
+R1#show run<br>
+!<br>
+interface GigabitEthernet0/0.3<br>
+ encapsulation dot1Q 3<br>
+ ip address 192.168.3.1 255.255.255.0<br>
+!<br>
+interface GigabitEthernet0/0.4<br>
+ encapsulation dot1Q 4<br>
+ ip address 192.168.4.1 255.255.255.0<br>
+!<br>
+interface GigabitEthernet0/0.8<br>
+ encapsulation dot1Q 8<br>
 
-Switch1#show run
-!
-interface Vlan3
- ip address 192.168.3.11 255.255.255.0
-!
-ip route 0.0.0.0 0.0.0.0 192.168.3.1
+Switch1#show run<br>
+!<br>
+interface Vlan3<br>
+ ip address 192.168.3.11 255.255.255.0<br>
+!<br>
+ip route 0.0.0.0 0.0.0.0 192.168.3.1<br>
 
-Switch2#show run
-!
-interface Vlan3
- ip address 192.168.3.12 255.255.255.0
-!
-ip route 0.0.0.0 0.0.0.0 192.168.3.1
+Switch2#show run<br>
+!<br>
+interface Vlan3<br>
+ ip address 192.168.3.12 255.255.255.0<br>
+!<br>
+ip route 0.0.0.0 0.0.0.0 192.168.3.1<br>
 
 
 ### VLAN Table
@@ -117,54 +117,54 @@ ip route 0.0.0.0 0.0.0.0 192.168.3.1
 |7|ParkingLot|S1: Gi0/3, Gi1/0, Gi1/1, Gi1/2, Gi1/3<br> S2: Gi0/2, Gi0/3, Gi1/0, Gi1/1, Gi1/2, Gi1/3|
 |:8|Native|N/A|
 
-Switch1#show run
-!
-!
-interface GigabitEthernet0/0
- switchport trunk allowed vlan 3,4,8
- switchport trunk encapsulation dot1q
- switchport trunk native vlan 8
- switchport mode trunk
- negotiation auto
-!
-interface GigabitEthernet0/1
- switchport trunk allowed vlan 3,4,8
- switchport trunk encapsulation dot1q
- switchport trunk native vlan 8
- switchport mode trunk
- negotiation auto
-!
-interface GigabitEthernet0/2
- switchport access vlan 3
- switchport mode access
- negotiation auto
-!
-interface GigabitEthernet0/3
- switchport access vlan 7
- switchport mode access
- shutdown
- negotiation auto
-!
+Switch1#show run<br>
+!<br>
+!<br>
+interface GigabitEthernet0/0<br>
+ switchport trunk allowed vlan 3,4,8<br>
+ switchport trunk encapsulation dot1q<br>
+ switchport trunk native vlan 8<br>
+ switchport mode trunk<br>
+ negotiation auto<br>
+!<br>
+interface GigabitEthernet0/1<br>
+ switchport trunk allowed vlan 3,4,8<br>
+ switchport trunk encapsulation dot1q<br>
+ switchport trunk native vlan 8<br>
+ switchport mode trunk<br>
+ negotiation auto<br>
+!<br>
+interface GigabitEthernet0/2<br>
+ switchport access vlan 3<br>
+ switchport mode access<br>
+ negotiation auto<br>
+!<br>
+interface GigabitEthernet0/3<br>
+ switchport access vlan 7<br>
+ switchport mode access<br>
+ shutdown<br>
+ negotiation auto<br>
+!<br>
 
-Switch2#show run
-!
-interface GigabitEthernet0/0
- switchport trunk allowed vlan 3,4,8
- switchport trunk encapsulation dot1q
- switchport trunk native vlan 8
- switchport mode trunk
- negotiation auto
-!
-interface GigabitEthernet0/1
- switchport access vlan 4
- switchport mode access
- negotiation auto
-!
-interface GigabitEthernet0/2
- switchport access vlan 7
- switchport mode access
- shutdown
- negotiation auto
+Switch2#show run<br>
+!<br>
+interface GigabitEthernet0/0<br>
+ switchport trunk allowed vlan 3,4,8<br>
+ switchport trunk encapsulation dot1q<br>
+ switchport trunk native vlan 8<br>
+ switchport mode trunk<br>
+ negotiation auto<br>
+!<br>
+interface GigabitEthernet0/1<br>
+ switchport access vlan 4<br>
+ switchport mode access<br>
+ negotiation auto<br>
+!<br>
+interface GigabitEthernet0/2<br>
+ switchport access vlan 7<br>
+ switchport mode access<br>
+ shutdown<br>
+ negotiation auto<br>
 
 ####  Assign VLANs to the correct switch interfaces.
 >show vlan
