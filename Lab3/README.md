@@ -98,12 +98,6 @@ ipv6 route ::/0 2001:DB8:ACAD:2::2<br>
 ipv6 ioam timestamp<br>
 !<br>
 access-list 1 permit 192.168.0.0 0.0.0.63<br>
-!<br>
-banner motd ^C<br>
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*<br>
-\*      Attention! Unauthorized access to this device is prohibited.      \*<br>
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*^C<br>
-end<br>
 </details>
 
 2. R2 config
@@ -185,16 +179,16 @@ ip route 0.0.0.0 0.0.0.0 192.168.0.97<br>
 >Issue the command ***show ip dhcp bindings*** to examine established DHCP address assignments.<br>
 ![](show_ip_dhcp_bindings.png)<br>
 
->Issue the command ***show ip dhcp server statistics*** to examine DHCP messages.
+>Issue the command ***show ip dhcp server statistics*** to examine DHCP messages.<br>
 ![](ip_dhcp_server_statistics.png)<br>
 
->Attempt to acquire an IP address from DHCP on PC-A
-![](ping_R1.png)
+>Attempt to acquire an IP address from DHCP on PC-A<br>
+![](ping_R1.png)<br>
 
->Attempt to acquire an IP address from DHCP on PC-B
-![](ping_R1_from_PC-B.png)
+>Attempt to acquire an IP address from DHCP on PC-B<br>
+![](ping_R1_from_PC-B.png)<br>
 
->Issue the ***show ip dhcp server statistics*** on R2 to verify DHCP messages.
-![](show_ip_dhcp_server_statistics_R2.png)
+>Issue the ***show ip dhcp server statistics*** on R2 to verify DHCP messages.<br>
+![](show_ip_dhcp_server_statistics_R2.png)<br>
 
 
