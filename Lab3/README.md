@@ -38,7 +38,7 @@
 1. R1 config
 <details>
   <summary>click for sohw config</summary>
-show run
+`show run
 Building configuration...
 !
 ip dhcp excluded-address 192.168.0.1 192.168.0.5
@@ -104,13 +104,12 @@ banner motd ^C
 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 \*      Attention! Unauthorized access to this device is prohibited.      \*
 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*^C
-end </details>
+end`</details>
 
 2. R2 config
 <details>
   <summary>click for see config</summary>
-ip cef
-ipv6 unicast-routing
+`ipv6 unicast-routing
 ipv6 cef
 !
 interface GigabitEthernet0/0
@@ -135,13 +134,12 @@ ip route 0.0.0.0 0.0.0.0 10.0.0.1
 !
 ipv6 route ::/0 2001:DB8:ACAD:2::1
 ipv6 ioam timestamp
-end</details>
-####
+end`</details>
 
 3. S1 config
 <details>
   <summary>click for see config</summary>
-hostname S1
+`hostname S1
 !
 interface GigabitEthernet0/0
  switchport access vlan 100
@@ -164,15 +162,15 @@ interface GigabitEthernet0/2
 interface Vlan200
  ip address 192.168.0.66 255.255.255.224
 !
-ip route 0.0.0.0 0.0.0.0 192.168.0.65</details>
+ip route 0.0.0.0 0.0.0.0 192.168.0.65`</details>
 
 4. S2 config
 <details>
   <summary>click for see config</summary>
-hostname S2
+`hostname S2
 !
 interface Vlan1
  ip address 192.168.0.98 255.255.255.240
 !
-ip route 0.0.0.0 0.0.0.0 192.168.0.97</details>
+ip route 0.0.0.0 0.0.0.0 192.168.0.97`</details>
 
