@@ -32,37 +32,16 @@
 |999|Parking_Lot|S1: G0/2-3 G1/0-3|
 |1000|Native|N/A|
 
-## PART1: Build the Network and Configure Basic Device Settings
 
-<spoiler title="R1#show run">
-  '''
-R1#show run
+## PART1: Build the Network and Configure Basic Device Settings<br>
+
+1. R1 config
+<details>
+  <summary>click for sohw config</summary>
+show run
 Building configuration...
-
-Current configuration : 4424 bytes
 !
-! Last configuration change at 07:54:07 UTC Wed Jun 7 2023
-!
-version 15.9
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-!
-hostname R1
-!
-boot-start-marker
-boot-end-marker
-!
-
-no logging console
-!
-no aaa new-model
-!
-mmi polling-interval 60
-no mmi auto-configure
-no mmi pvc
-mmi snmp-timeout 180
-!
+ip dhcp excluded-address 192.168.0.1 192.168.0.5
 ip dhcp excluded-address 192.168.0.97 192.168.0.101
 !
 ip dhcp pool Subnet_A
@@ -83,10 +62,6 @@ ip cef
 ipv6 unicast-routing
 ipv6 cef
 !
-multilink bundle-name authenticated
-!
-redundancy
-!
 interface GigabitEthernet0/0
  ip address 10.0.0.1 255.255.255.252
  duplex auto
@@ -105,7 +80,6 @@ interface GigabitEthernet0/1.100
  description for_Clients_dhcp
  encapsulation dot1Q 100
  ip address 192.168.0.1 255.255.255.192
- ip nat inside
  ip virtual-reassembly in
  ipv6 address FE80::1 link-local
  ipv6 address 2001:DB8:ACAD:1::1/64
@@ -119,28 +93,6 @@ interface GigabitEthernet0/1.1000
  description Native
  encapsulation dot1Q 1000 native
 !
-interface GigabitEthernet0/2
- ip address 10.199.199.2 255.255.255.252
- ip nat outside
- ip virtual-reassembly in
- shutdown 
- duplex auto
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/3
- no ip address
- shutdown
- duplex auto
- speed auto
- media-type rj45
-!
-ip forward-protocol nd
-!
-no ip http server
-no ip http secure-server
-ip nat inside source list 1 interface GigabitEthernet0/2 overload
-ip route 0.0.0.0 0.0.0.0 10.199.199.1
 ip route 0.0.0.0 0.0.0.0 10.0.0.2
 !
 ipv6 route ::/0 2001:DB8:ACAD:2::2
@@ -148,24 +100,79 @@ ipv6 ioam timestamp
 !
 access-list 1 permit 192.168.0.0 0.0.0.63
 !
-control-plane
-!
-banner exec ^C
 banner motd ^C
 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 \*      Attention! Unauthorized access to this device is prohibited.      \*
 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*^C
-!
-line con 0
-line aux 0
-line vty 0 4
- login
- transport input none
-!
-no scheduler allocate
-!
-end   
-'''
-</spoiler>
+end </details>
 
+2. R2 config
+<details>
+  <summary>click for see config</summary>
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+interface GigabitEthernet0/0
+ ip address 10.0.0.2 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address FE80::2 link-local
+ ipv6 address 2001:DB8:ACAD:2::2/64
+!
+interface GigabitEthernet0/1
+ description for_Clients
+ ip address 192.168.0.97 255.255.255.240
+ ip helper-address 10.0.0.1
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:3::1/64
+!
+ip route 0.0.0.0 0.0.0.0 10.0.0.1
+!
+ipv6 route ::/0 2001:DB8:ACAD:2::1
+ipv6 ioam timestamp
+end</details>
 ####
+
+3. S1 config
+<details>
+  <summary>click for see config</summary>
+hostname S1
+!
+interface GigabitEthernet0/0
+ switchport access vlan 100
+ switchport mode access
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 100,200,1000
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1000
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+ negotiation auto         
+!
+interface Vlan200
+ ip address 192.168.0.66 255.255.255.224
+!
+ip route 0.0.0.0 0.0.0.0 192.168.0.65</details>
+
+4. S2 config
+<details>
+  <summary>click for see config</summary>
+hostname S2
+!
+interface Vlan1
+ ip address 192.168.0.98 255.255.255.240
+!
+ip route 0.0.0.0 0.0.0.0 192.168.0.97</details>
+
