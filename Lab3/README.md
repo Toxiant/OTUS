@@ -38,73 +38,72 @@
 1. R1 config
 <details>
   <summary>click for sohw config</summary>
-show run
-Building configuration...
-!
-ip dhcp excluded-address 192.168.0.1 192.168.0.5
-ip dhcp excluded-address 192.168.0.97 192.168.0.101
-!
-ip dhcp pool Subnet_A
- network 192.168.0.0 255.255.255.192
- default-router 192.168.0.1 
- domain-name ccna-lab.com
- dns-server 8.8.8.8 
- lease 2 12 30
-!
-ip dhcp pool R2_Client_LAN
- network 192.168.0.96 255.255.255.240
- default-router 192.168.0.97 
- domain-name ccna-lab.com
- lease 2 12 30
-!
-no ip domain lookup
-ip cef
-ipv6 unicast-routing
-ipv6 cef
-!
-interface GigabitEthernet0/0
- ip address 10.0.0.1 255.255.255.252
- duplex auto
- speed auto
- media-type rj45
- ipv6 address FE80::1 link-local
- ipv6 address 2001:DB8:ACAD:2::1/64
-!
-interface GigabitEthernet0/1
- no ip address
- duplex auto
- speed auto
- media-type rj45
-!         
-interface GigabitEthernet0/1.100
- description for_Clients_dhcp
- encapsulation dot1Q 100
- ip address 192.168.0.1 255.255.255.192
- ip virtual-reassembly in
- ipv6 address FE80::1 link-local
- ipv6 address 2001:DB8:ACAD:1::1/64
-!
-interface GigabitEthernet0/1.200
- description for_Management
- encapsulation dot1Q 200
- ip address 192.168.0.65 255.255.255.224
-!
-interface GigabitEthernet0/1.1000
- description Native
- encapsulation dot1Q 1000 native
-!
-ip route 0.0.0.0 0.0.0.0 10.0.0.2
-!
-ipv6 route ::/0 2001:DB8:ACAD:2::2
-ipv6 ioam timestamp
-!
-access-list 1 permit 192.168.0.0 0.0.0.63
-!
-banner motd ^C
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-\*      Attention! Unauthorized access to this device is prohibited.      \*
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*^C
-end
+Building configuration...<br>
+!<br>
+ip dhcp excluded-address 192.168.0.1 192.168.0.5<br>
+ip dhcp excluded-address 192.168.0.97 192.168.0.101<br>
+!<br>
+ip dhcp pool Subnet_A<br>
+ network 192.168.0.0 255.255.255.192<br>
+ default-router 192.168.0.1 <br>
+ domain-name ccna-lab.com<br>
+ dns-server 8.8.8.8 <br>
+ lease 2 12 30<br>
+!<br>
+ip dhcp pool R2_Client_LAN<br>
+ network 192.168.0.96 255.255.255.240<br>
+ default-router 192.168.0.97 <br>
+ domain-name ccna-lab.com<br>
+ lease 2 12 30<br>
+!<br>
+no ip domain lookup<br>
+ip cef<br>
+ipv6 unicast-routing<br>
+ipv6 cef<br>
+!<br>
+interface GigabitEthernet0/0<br>
+ ip address 10.0.0.1 255.255.255.252<br>
+ duplex auto<br>
+ speed auto<br>
+ media-type rj45<br>
+ ipv6 address FE80::1 link-local<br>
+ ipv6 address 2001:DB8:ACAD:2::1/64<br>
+!<br>
+interface GigabitEthernet0/1<br>
+ no ip address<br>
+ duplex auto<br>
+ speed auto<br>
+ media-type rj45<br>
+!         <br>
+interface GigabitEthernet0/1.100<br>
+ description for_Clients_dhcp<br>
+ encapsulation dot1Q 100<br>
+ ip address 192.168.0.1 255.255.255.192<br>
+ ip virtual-reassembly in<br>
+ ipv6 address FE80::1 link-local<br>
+ ipv6 address 2001:DB8:ACAD:1::1/64<br>
+!<br>
+interface GigabitEthernet0/1.200<br>
+ description for_Management<br>
+ encapsulation dot1Q 200<br>
+ ip address 192.168.0.65 255.255.255.224<br>
+!<br>
+interface GigabitEthernet0/1.1000<br>
+ description Native<br>
+ encapsulation dot1Q 1000 native<br>
+!<br>
+ip route 0.0.0.0 0.0.0.0 10.0.0.2<br>
+!<br>
+ipv6 route ::/0 2001:DB8:ACAD:2::2<br>
+ipv6 ioam timestamp<br>
+!<br>
+access-list 1 permit 192.168.0.0 0.0.0.63<br>
+!<br>
+banner motd ^C<br>
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*<br>
+\*      Attention! Unauthorized access to this device is prohibited.      \*<br>
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*^C<br>
+end<br>
 </details>
 
 2. R2 config
@@ -141,38 +140,61 @@ end<br>
 3. S1 config
 <details>
   <summary>click for see config</summary>
-`hostname S1
-!
-interface GigabitEthernet0/0
- switchport access vlan 100
- switchport mode access
- negotiation auto
-!
-interface GigabitEthernet0/1
- switchport trunk allowed vlan 100,200,1000
- switchport trunk encapsulation dot1q
- switchport trunk native vlan 1000
- switchport mode trunk
- negotiation auto
-!
-interface GigabitEthernet0/2
- switchport access vlan 999
- switchport mode access
- shutdown
- negotiation auto         
-!
-interface Vlan200
- ip address 192.168.0.66 255.255.255.224
-!
-ip route 0.0.0.0 0.0.0.0 192.168.0.65`</details>
+hostname S1<br>
+!<br>
+interface GigabitEthernet0/0<br>
+ switchport access vlan 100<br>
+ switchport mode access<br>
+ negotiation auto<br>
+!<br>
+interface GigabitEthernet0/1<br>
+ switchport trunk allowed vlan 100,200,1000<br>
+ switchport trunk encapsulation dot1q<br>
+ switchport trunk native vlan 1000<br>
+ switchport mode trunk<br>
+ negotiation auto<br>
+!<br>
+interface GigabitEthernet0/2<br>
+ switchport access vlan 999<br>
+ switchport mode access<br>
+ shutdown<br>
+ negotiation auto         <br>
+!<br>
+interface Vlan200<br>
+ ip address 192.168.0.66 255.255.255.224<br>
+!<br>
+ip route 0.0.0.0 0.0.0.0 192.168.0.65<br>
+</details>
 
 4. S2 config
 <details>
   <summary>click for see config</summary>
-`hostname S2
-!
-interface Vlan1
- ip address 192.168.0.98 255.255.255.240
-!
-ip route 0.0.0.0 0.0.0.0 192.168.0.97`</details>
+hostname S2<br>
+!<br>
+interface Vlan1<br>
+ ip address 192.168.0.98 255.255.255.240<br>
+!<br>
+ip route 0.0.0.0 0.0.0.0 192.168.0.97<br>
+</details>
+
+#### Verify the DHCPv4 Server configuration<br>
+
+>Issue the command ***show ip dhcp pool*** to examine the pool details.<br>
+![](show_ip_dhcp_pool.png)<br>
+
+>Issue the command ***show ip dhcp bindings*** to examine established DHCP address assignments.<br>
+![](show_ip_dhcp_bindings.png)<br>
+
+>Issue the command ***show ip dhcp server statistics*** to examine DHCP messages.
+![](ip_dhcp_server_statistics.png)<br>
+
+>Attempt to acquire an IP address from DHCP on PC-A
+![](ping_R1.png)
+
+>Attempt to acquire an IP address from DHCP on PC-B
+![](ping_R1_from_PC-B.png)
+
+>Issue the ***show ip dhcp server statistics*** on R2 to verify DHCP messages.
+![](show_ip_dhcp_server_statistics_R2.png)
+
 
