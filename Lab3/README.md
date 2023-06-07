@@ -38,7 +38,7 @@
 1. R1 config
 <details>
   <summary>click for sohw config</summary>
-`show run
+show run
 Building configuration...
 !
 ip dhcp excluded-address 192.168.0.1 192.168.0.5
@@ -104,37 +104,39 @@ banner motd ^C
 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 \*      Attention! Unauthorized access to this device is prohibited.      \*
 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*^C
-end`</details>
+end
+</details>
 
 2. R2 config
 <details>
   <summary>click for see config</summary>
-`ipv6 unicast-routing
-ipv6 cef
-!
-interface GigabitEthernet0/0
- ip address 10.0.0.2 255.255.255.252
- duplex auto
- speed auto
- media-type rj45
- ipv6 address FE80::2 link-local
- ipv6 address 2001:DB8:ACAD:2::2/64
-!
-interface GigabitEthernet0/1
- description for_Clients
- ip address 192.168.0.97 255.255.255.240
- ip helper-address 10.0.0.1
- duplex auto
- speed auto
- media-type rj45
- ipv6 address FE80::1 link-local
- ipv6 address 2001:DB8:ACAD:3::1/64
-!
-ip route 0.0.0.0 0.0.0.0 10.0.0.1
-!
-ipv6 route ::/0 2001:DB8:ACAD:2::1
-ipv6 ioam timestamp
-end`</details>
+ipv6 unicast-routing<br>
+ipv6 cef<br>
+!<br>
+interface GigabitEthernet0/0<br>
+ ip address 10.0.0.2 255.255.255.252<br>
+ duplex auto<br>
+ speed auto<br>
+ media-type rj45<br>
+ ipv6 address FE80::2 link-local<br>
+ ipv6 address 2001:DB8:ACAD:2::2/64<br>
+!<br>
+interface GigabitEthernet0/1<br>
+ description for_Clients<br>
+ ip address 192.168.0.97 255.255.255.240<br>
+ ip helper-address 10.0.0.1<br>
+ duplex auto<br>
+ speed auto<br>
+ media-type rj45<br>
+ ipv6 address FE80::1 link-local<br>
+ ipv6 address 2001:DB8:ACAD:3::1/64<br>
+!<br>
+ip route 0.0.0.0 0.0.0.0 10.0.0.1<br>
+!<br>
+ipv6 route ::/0 2001:DB8:ACAD:2::1<br>
+ipv6 ioam timestamp<br>
+end<br>
+</details>
 
 3. S1 config
 <details>
