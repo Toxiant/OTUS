@@ -192,3 +192,20 @@ ip route 0.0.0.0 0.0.0.0 192.168.0.97<br>
 ![](show_ip_dhcp_server_statistics_R2.png)<br>
 
 
+
+## Lab - Configure DHCPv6
+
+### Addressing table
+
+|Device|Interface|IPv6 Address|
+|:-|:-|:-|
+|R1|Gi0/0|2001:db8:acad:2::1/64|
+|||fe80::1|
+|R1|Gi0/1|2001:db8:acad:1::1/64|
+|||fe80::1|
+|R2|Gi0/0|2001:db8:acad:2::2/64|
+|||fe80::2|
+||Gi0/1|2001:db8:acad:3::1 /64|
+|||fe80::1|
+|PC-A|NIC|DHCP|
+|PC-B|NIC|DHCP|
