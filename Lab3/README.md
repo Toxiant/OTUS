@@ -191,4 +191,28 @@ ip route 0.0.0.0 0.0.0.0 192.168.0.97<br>
 >Issue the ***show ip dhcp server statistics*** on R2 to verify DHCP messages.<br>
 ![](show_ip_dhcp_server_statistics_R2.png)<br>
 
+## Lab - Configure DHCPv6
+
+### Addressing table
+
+|Device|Interface|IPv6 Address|
+|:-|:-|:-|
+|R1|Gi0/0|2001:db8:acad:2::1/64|
+|||fe80::1|
+|R1|Gi0/1|2001:db8:acad:1::1/64|
+|||fe80::1|
+|R2|Gi0/0|2001:db8:acad:2::2/64|
+|||fe80::2|
+||Gi0/1|2001:db8:acad:3::1 /64|
+|||fe80::1|
+|PC-A|NIC|DHCP|
+|PC-B|NIC|DHCP|
+
+## PART2: Verify SLAAC Address Assignment from R1
+
+>Verifing that Host PC-A receives an IPv6 address using the SLAAC method.<br>
+![](ipconfig_PC-A.png)<br>
+
+*Where did the host-id portion of the address come from?*<br>
+
 
