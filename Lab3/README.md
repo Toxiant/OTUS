@@ -215,7 +215,7 @@ ip route 0.0.0.0 0.0.0.0 192.168.0.97<br>
 
 *Where did the host-id portion of the address come from?*<br>
  - Our PC using to random method for generate IPv6 address on default.<br>
-First part our address's  comes from <details> <summary>RA mesage</summary> 
+First part our address's  comes from <details> <summary>RA mesage (field - Prefix: 2001:db8:acad:1:: ) and second part generete random.</summary> 
 Frame 166: 118 bytes on wire (944 bits), 118 bytes captured (944 bits) on interface -, id 0<br>
 Ethernet II, Src: 50:00:00:04:00:01 (50:00:00:04:00:01), Dst: IPv6mcast_01 (33:33:00:00:00:01)<br>
 Internet Protocol Version 6, Src: fe80::1, Dst: ff02::1<br>
@@ -252,6 +252,19 @@ Internet Control Message Protocol v6<br>
         Reserved<br>
         Prefix: 2001:db8:acad:1:: <br>
 </details>
-(field - Prefix: 2001:db8:acad:1:: ) and second part generete random.<br> 
 
+## Part 3: Configure and Verify a DHCPv6 server on R1<br>
 
+>Examine the output of *ipconfig /all* and notice the changes.<br>
+![](PC-A_DHCPv6.png)<rb>
+
+>Test connectivity by pinging R2’s G0/0/1 interface IP address.<br>
+![](pinging_R2.png)<br>
+
+## Part 4-5: Configure a stateful DHCPv6 server on R1 and verify DHCPv6 relay on R2.<br>
+
+>Statefull DHCP ipv6 on PC-B<br>
+![](statfull-PC-B.png)
+
+>Test connectivity by pinging R1’s G0/0/1 interface IP address.<br>
+![](ping-R1.png)<br>
