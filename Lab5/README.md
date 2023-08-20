@@ -95,20 +95,21 @@ ip route 0.0.0.0 0.0.0.0 100.200.150.21 20 track 2
 ```
 <br>
 Для каждого маршрута добавили соотвествующий track провеки достижимости по ip sla.<br>
-В наш rout-map так-же добавили проверку, чтобы в случаи аварии на пути следованиия<br> 
+В наш rout-map так-же добавили проверку, чтобы в случаи аварии на пути следования<br> 
 отработала провека в route-map verify-availability и поменялся next-hop.<br>
+
 ```
 route-map Balance permit 10
  match ip address PC30
  set ip next-hop verify-availability 100.200.150.33 10 track 1
  set ip next-hop verify-availability 100.200.150.21 20 track 2
-!
+
 route-map Balance permit 20
  match ip address PC31
  set ip next-hop verify-availability 100.200.150.21 10 track 2
  set ip next-hop verify-availability 100.200.150.33 20 track 1
 ```
-
+<br>
 #### Проверяем:<br>
 >Маршрут по умолчанию<br>
 ![](R28_show_ip_route.png)<br>
