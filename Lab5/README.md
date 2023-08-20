@@ -1,8 +1,8 @@
 ### Настроите политику маршрутизации для сетей офиса.<br>
 
 ##### Создаём два acees-list на основе которых будет моршрутизировать траффик.<br>
-list PC30 - сообвествует трафику с ip отправителя 192.168.2.2<br>
-list PC31 - сообвествует трафику с ip отправителя 192.168.2.3<br>
+list PC30 - соответствует трафику с ip отправителя 192.168.2.2<br>
+list PC31 - соответствует трафику с ip отправителя 192.168.2.3<br>
 
 ```
 R28#show ip access-lists 
@@ -78,15 +78,16 @@ ip sla 2
 ip sla schedule 2 life forever start-time now
 ```
 <br>
-Настроили track 1 и 2 для каждого sla
+
+Настроили track 1 и 2 для каждого sla.
 ```
 track 1 ip sla 1 reachability
  delay down 30 up 30
-!
 track 2 ip sla 2 reachability
  delay down 30 up 30
 ```
 <br>
+
 Установили два маршрута по умолчанию с разной метрикой, чтобы для трафика не попадающего под нашу политику для<br>PC30 и PC31 приоритетным маршрутом был interface e0/1 R28.<br>
 ```
 ip route 0.0.0.0 0.0.0.0 100.200.150.33 10 track 1
@@ -115,4 +116,150 @@ route-map Balance permit 20
 ![](R25_no_ip_address.png)<br>
 >Изменеие в состоянии route-map<br>
 ![](R28_show_route_map.png)<br>
+
+R28 config
+<details>
+  <summary>click for see config</summary>
+!<br>
+version 15.4<br>
+service timestamps debug datetime msec<br>
+service timestamps log datetime msec<br>
+no service password-encryption<br>
+!<br>
+hostname R28<br>
+!<br>
+boot-start-marker<br>
+boot-end-marker<br>
+!<br>
+no aaa new-model<br>
+mmi polling-interval 60<br>
+no mmi auto-configure<br>
+no mmi pvc<br>
+mmi snmp-timeout 180<br>
+!<br>
+ip dhcp excluded-address 192.168.2.1<br>
+!<br>
+ip dhcp pool Clients<br>
+ network 192.168.2.0 255.255.255.0<br>
+ default-router 192.168.2.1 <br>
+!<br>
+ip cef<br>
+no ipv6 cef<br>
+!<br>
+multilink bundle-name authenticated<br>
+!<br>
+redundancy<br>
+!<br>
+track 1 ip sla 1 reachability<br>
+ delay down 30 up 30<br>
+!<br>
+track 2 ip sla 2 reachability<br>
+ delay down 30 up 30<br>
+!<br>
+policy-map test<br>
+ class class-default<br>
+  police cir 1024000 bc 192000 be 384000<br>
+   exceed-action drop <br>
+   violate-action drop <br>
+!<br>
+interface Ethernet0/0<br>
+ no shutdown<br>
+ description to Triada R26 eth0/1<br>
+ ip address 100.200.150.22 255.255.255.252<br>
+!<br>
+interface Ethernet0/1<br>
+ no shutdown<br>
+ description to Triada R25 eth0/3<br>
+ ip address 100.200.150.34 255.255.255.252<br>
+!<br>
+interface Ethernet0/2<br>
+ no shutdown<br>
+ no ip address<br>
+!<br>
+interface Ethernet0/2.100<br>
+ no shutdown<br>
+ description Managment<br>
+ encapsulation dot1Q 100<br>
+ ip address 172.18.0.1 255.255.255.252<br>
+!<br>
+interface Ethernet0/2.200<br>
+ no shutdown<br>
+ description for Clients dhcp<br>
+ encapsulation dot1Q 200<br>
+ ip address 192.168.2.1 255.255.255.0<br>
+ ip policy route-map Balance<br>
+!<br>
+interface Ethernet0/3<br>
+ no shutdown<br>
+ no ip address<br>
+ shutdown<br>
+!<br>
+interface Ethernet1/0<br>
+ no shutdown<br>
+ no ip address<br>
+ shutdown<br>
+!<br>
+interface Ethernet1/1<br>
+ no shutdown<br>
+ no ip address<br>
+ shutdown<br>
+!<br>
+interface Ethernet1/2<br>
+ no shutdown<br>
+ no ip address<br>
+ shutdown<br>
+!<br>
+interface Ethernet1/3<br>
+ no shutdown<br>
+ no ip address<br>
+ shutdown<br>
+!<br>
+ip forward-protocol nd<br>
+!<br>
+no ip http server<br>
+no ip http secure-server<br>
+ip route 0.0.0.0 0.0.0.0 100.200.150.33 track 1<br>
+ip route 0.0.0.0 0.0.0.0 100.200.150.21 track 2<br>
+ip route 100.200.150.24 255.255.255.252 100.200.150.21<br>
+!<br>
+ip access-list extended PC30<br>
+ permit ip host 192.168.2.2 any<br>
+ip access-list extended PC31<br>
+ permit ip host 192.168.2.3 any<br>
+!<br>
+ip sla 1<br>
+ icmp-echo 100.200.150.33 source-ip 100.200.150.34<br>
+ threshold 1<br>
+ timeout 2<br>
+ frequency 4<br>
+ip sla schedule 1 life forever start-time now<br>
+ip sla 2<br>
+ icmp-echo 100.200.150.30 source-ip 100.200.150.22<br>
+ threshold 1<br>
+ timeout 2<br>
+ frequency 4<br>
+ip sla schedule 2 life forever start-time now<br>
+!<br>
+route-map Balance permit 10<br>
+ match ip address PC30<br>
+ set ip next-hop verify-availability 100.200.150.33 10 track 1<br>
+ set ip next-hop verify-availability 100.200.150.21 20 track 2<br>
+!<br>
+route-map Balance permit 20<br>
+ match ip address PC31<br>
+ set ip next-hop verify-availability 100.200.150.21 10 track 2<br>
+ set ip next-hop verify-availability 100.200.150.33 20 track 1<br>
+!<br>
+control-plane<br>
+!<br>
+line con 0<br>
+ exec-timeout 30 0<br>
+ logging synchronous<br>
+line aux 0<br>
+line vty 0 4<br>
+ login<br>
+ transport input none<br>
+!<br>
+end<br>
+</details>
 
