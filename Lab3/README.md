@@ -214,8 +214,57 @@ ip route 0.0.0.0 0.0.0.0 192.168.0.97<br>
 ![](ipconfig_PC-A.png)<br>
 
 *Where did the host-id portion of the address come from?*<br>
+ - Our PC using to random method for generate IPv6 address on default.<br>
+First part our address's  comes from <details> <summary>RA mesage (field - Prefix: 2001:db8:acad:1:: ) and second part generete random.</summary> 
+Frame 166: 118 bytes on wire (944 bits), 118 bytes captured (944 bits) on interface -, id 0<br>
+Ethernet II, Src: 50:00:00:04:00:01 (50:00:00:04:00:01), Dst: IPv6mcast_01 (33:33:00:00:00:01)<br>
+Internet Protocol Version 6, Src: fe80::1, Dst: ff02::1<br>
+Internet Control Message Protocol v6<br>
+    Type: Router Advertisement (134)<br>
+    Code: 0<br>
+    Checksum: 0xf336 [correct]<br>
+    [Checksum Status: Good]<br>
+    Cur hop limit: 64<br>
+    Flags: 0x00, Prf (Default Router Preference): Medium<br>
+    Router lifetime (s): 1800<br>
+    Reachable time (ms): 0<br>
+    Retrans timer (ms): 0<br>
+    ICMPv6 Option (Source link-layer address : 50:00:00:04:00:01)<br>
+        Type: Source link-layer address (1)<br>
+        Length: 1 (8 bytes)<br>
+        Link-layer address: 50:00:00:04:00:01 (50:00:00:04:00:01)<br>
+    ICMPv6 Option (MTU : 1500)<br>
+        Type: MTU (5)<br>
+        Length: 1 (8 bytes)<br>
+        Reserved<br>
+        MTU: 1500<br>
+    ICMPv6 Option (Prefix information : 2001:db8:acad:1::/64)<br>
+        Type: Prefix information (3)<br>
+        Length: 4 (32 bytes)<br>
+        Prefix Length: 64<br>
+        Flag: 0xc0, On-link flag(L), Autonomous address-configuration flag(A)<br>
+            1... .... = On-link flag(L): Set<br>
+            .1.. .... = Autonomous address-configuration flag(A): Set<br>
+            ..0. .... = Router address flag(R): Not set<br>
+            ...0 0000 = Reserved: 0<br>
+        Valid Lifetime: 2592000<br>
+        Preferred Lifetime: 604800<br>
+        Reserved<br>
+        Prefix: 2001:db8:acad:1:: <br>
+</details>
 
+## Part 3: Configure and Verify a DHCPv6 server on R1<br>
 
+>Examine the output of *ipconfig /all* and notice the changes.<br>
+![](PC-A_DHCPv6.png)<rb>
+
+>Test connectivity by pinging R2’s G0/0/1 interface IP address.<br>
+![](pinging_R2.png)<br>
+
+## Part 4-5: Configure a stateful DHCPv6 server on R1 and verify DHCPv6 relay on R2.<br>
+
+>Statefull DHCP ipv6 on PC-B<br>
+![](statfull-PC-B.png)
 
 ## Lab - Configure DHCPv6
 
@@ -233,3 +282,6 @@ ip route 0.0.0.0 0.0.0.0 192.168.0.97<br>
 |||fe80::1|
 |PC-A|NIC|DHCP|
 |PC-B|NIC|DHCP|
+
+>Test connectivity by pinging R1’s G0/0/1 interface IP address.<br>
+![](ping-R1.png)<br>
