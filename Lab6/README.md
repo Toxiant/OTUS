@@ -78,7 +78,7 @@ router ospf 1
 <br>
 
 >R12#show ip route ospf<br>
-![](R12_show _ip_route_ospf.png)<br>
+![](R12_show_ip_route_ospf.png)<br>
 
 #### Маршрутизатор R19 находится в зоне 101 и получает только маршрут по умолчанию.<br>
 
@@ -125,4 +125,4 @@ router ospf 1
 В результате получаем все маршруты зон ospf кроме отфильтрованных.<br>
 
 >R20#show ip route ospf<br>
-![](R20_show _ip_route_ospf.png)<br>
+![](R20_show_ip_route_ospf.png)<br>

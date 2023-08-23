@@ -1,0 +1,165 @@
+
+!
+! Last configuration change at 07:42:24 UTC Mon Aug 21 2023
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R12
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+ip dhcp excluded-address 192.168.0.1
+!
+ip dhcp pool Clients
+ network 192.168.0.0 255.255.255.0
+ default-router 192.168.0.1 
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 10.0.0.12 255.255.255.255
+ ip ospf 1 area 10
+!
+interface Ethernet0/0
+ no shutdown
+ no ip address
+!
+interface Ethernet0/0.100
+ no shutdown
+ encapsulation dot1Q 100
+ ip address 172.16.0.1 255.255.255.248
+ ip ospf 1 area 10
+!
+interface Ethernet0/0.200
+ no shutdown
+ description for_Clients_dhcp
+ encapsulation dot1Q 200
+ ip address 192.168.0.1 255.255.255.0
+ ip ospf 1 area 10
+!
+interface Ethernet0/1
+ no shutdown
+ no ip address
+!
+interface Ethernet0/2
+ no shutdown
+ description to R14 eth0/0
+ ip address 172.16.0.9 255.255.255.252
+ ip ospf 1 area 10
+!
+interface Ethernet0/3
+ no shutdown
+ description to R15 eth0/1
+ ip address 172.16.0.13 255.255.255.252
+ ip ospf 1 area 10
+!
+interface Ethernet1/0
+ no shutdown
+ description to R13 eth1/0
+ ip address 172.16.0.37 255.255.255.252
+ ip ospf 1 area 10
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 12.12.12.12
+ area 10 nssa
+ passive-interface Ethernet0/0.100
+ passive-interface Ethernet0/0.200
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
+
