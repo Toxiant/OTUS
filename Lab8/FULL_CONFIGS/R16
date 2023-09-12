@@ -1,5 +1,5 @@
 !
-! Last configuration change at 17:15:40 UTC Sun Sep 10 2023
+! Last configuration change at 20:45:12 UTC Sun Sep 10 2023
 !
 version 15.4
 service timestamps debug datetime msec
@@ -95,7 +95,6 @@ interface Ethernet0/3
 interface Ethernet1/0
  no shutdown
  ip address 172.17.0.14 255.255.255.252
- shutdown
 !
 interface Ethernet1/1
  no shutdown
@@ -126,11 +125,18 @@ router eigrp SPB
   exit-af-interface
   !
   af-interface Loopback0
-   summary-address 10.0.0.16 255.255.255.255
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   summary-address 172.20.0.0 255.255.0.0
+  exit-af-interface
+  !
+  af-interface Ethernet1/0
+   summary-address 172.20.0.0 255.255.0.0
   exit-af-interface
   !
   topology base
-   auto-summary
   exit-af-topology
   network 10.0.0.16 0.0.0.0
   network 172.17.0.0
@@ -165,4 +171,3 @@ line vty 0 4
 !
 !
 end
-

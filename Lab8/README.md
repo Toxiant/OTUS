@@ -35,8 +35,7 @@
 R16 config EIGRP SPB
 <details>
   <summary>click for see config</summary>
-!<br>
-router eigrp SPB<br>
+  router eigrp SPB<br>
  !<br>
  address-family ipv4 unicast autonomous-system 2042<br>
   !<br>
@@ -49,11 +48,18 @@ router eigrp SPB<br>
   exit-af-interface<br>
   !<br>
   af-interface Loopback0<br>
-   summary-address 10.0.0.16 255.255.255.255<br>
+   passive-interface<br>
+  exit-af-interface<br>
+  !<br>
+  af-interface Ethernet0/1<br>
+   summary-address 172.20.0.0 255.255.0.0<br>
+  exit-af-interface<br>
+  !<br>
+  af-interface Ethernet1/0<br>
+   summary-address 172.20.0.0 255.255.0.0<br>
   exit-af-interface<br>
   !<br>
   topology base<br>
-   auto-summary<br>
   exit-af-topology<br>
   network 10.0.0.16 0.0.0.0<br>
   network 172.17.0.0<br>
@@ -64,9 +70,8 @@ router eigrp SPB<br>
 R17 config EIGRP SPB
 <details>
   <summary>click for see config</summary>
-!<br>
-router eigrp SPB<br>
- !        <br>
+  router eigrp SPB<br>
+ !<br>
  address-family ipv4 unicast autonomous-system 2042<br>
   !<br>
   af-interface Ethernet0/0.100<br>
@@ -78,17 +83,23 @@ router eigrp SPB<br>
   exit-af-interface<br>
   !<br>
   af-interface Loopback0<br>
-   summary-address 10.0.0.17 255.255.255.255<br>
+   passive-interface<br>
+  exit-af-interface<br>
+  !<br>
+  af-interface Ethernet0/1<br>
+   summary-address 192.168.5.0 255.255.255.0<br>
+  exit-af-interface<br>
+  !<br>
+  af-interface Ethernet1/0<br>
+   summary-address 192.168.5.0 255.255.255.0<br>
   exit-af-interface<br>
   !<br>
   topology base<br>
-   auto-summary<br>
   exit-af-topology<br>
   network 10.0.0.17 0.0.0.0<br>
   network 172.17.0.0<br>
   network 192.168.0.0 0.0.255.255<br>
  exit-address-family<br>
-!<br>
 </details>
 
 R18 config EIGRP SPB
@@ -136,17 +147,33 @@ af-interface Ethernet0/3
 ```
 <br>
 
-Таким образом в таблице маршрутизации R32 появляется маршрут по умолчанию анонсируемыйпротоколом EIGRP<br>
+Таким образом в таблице маршрутизации R32 появляется маршрут по умолчанию анонсируемый протоколом EIGRP<br>
 
 ![](R32_default.png)<br>
 
 #### R16-17 анонсируют только суммарные префиксы.<br>
 
-На маршрутизаторах R16-17 включил автоматическую суммаризацию<br>
+На маршрутизаторах R16-17 включил суммаризацию сетей на интерфейсах смотрящих в сторону соседей, так как для адресации в моей сети<br>
+не подходит глобальная суммаризация eigrp выполняемая на основе классового объединения.<br>
 
 ```
-  topology base
-   auto-summary
+R16#
+  af-interface Ethernet0/1
+   summary-address 172.20.0.0 255.255.0.0
+  exit-af-interface
+  !
+  af-interface Ethernet1/0
+   summary-address 172.20.0.0 255.255.0.0
+  exit-af-interface
+
+R17#
+  af-interface Ethernet0/1
+   summary-address 192.168.5.0 255.255.255.0
+  exit-af-interface
+  !
+  af-interface Ethernet1/0
+   summary-address 192.168.5.0 255.255.255.0
+  exit-af-interface
 ```
 <br>
 
@@ -156,3 +183,4 @@ af-interface Ethernet0/3
 
 ![](R18_route_eigrp.png)<br>
 
+![](all_route_eigrp.png)<br>
