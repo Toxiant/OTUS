@@ -145,7 +145,7 @@ router bgp 2042<br>
  bgp log-neighbor-changes<br>
  network 18.18.18.0 mask 255.255.255.0<br>
  neighbor 100.200.150.13 remote-as 520<br>
-<details>
+</details>
 
 ##### Организуете IP доступность между пограничным роутерами офисами Москва и С.-Петербург.<br>
 
