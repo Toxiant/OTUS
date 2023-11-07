@@ -93,7 +93,7 @@ router bgp 520<br>
   neighbor 100.200.150.14 activate<br>
   neighbor 100.200.200.6 activate<br>
  exit-address-family<br>
-<details>
+</details>
 
 R24#show ip bgp sum<br>
 ![](R24_sh_bgp_sum.png)<br>
