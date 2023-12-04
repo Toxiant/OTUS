@@ -1,0 +1,304 @@
+Building configuration...
+
+Current configuration : 333 bytes
+!
+interface Tunnel10
+ ip address 192.168.100.10 255.255.255.248
+ ip mtu 1400
+ ip nhrp map multicast 15.15.15.1
+ ip nhrp map 15.15.15.1 192.168.100.9
+ ip nhrp network-id 10
+ ip nhrp nhs 192.168.100.9
+ ip tcp adjust-mss 1360
+ tunnel source 100.200.150.34
+ tunnel destination 15.15.15.1
+ tunnel protection ipsec profile ipsec_prof
+end
+
+R28#show run 
+Building configuration...
+
+Current configuration : 6473 bytes
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R28
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!         
+!
+!
+!
+!
+
+
+!
+ip dhcp excluded-address 192.168.2.1
+!
+ip dhcp pool Clients
+ network 192.168.2.0 255.255.255.0
+ default-router 192.168.2.1 
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!         
+!
+!
+!
+!
+crypto pki trustpoint VPN
+ enrollment url http://14.14.14.1:80
+ ip-address 100.200.150.34
+ subject-name CN=R2,OU=VPN,O=Moscow,C=RU
+ revocation-check none
+ rsakeypair VPN
+!
+!
+crypto pki certificate chain VPN
+ certificate 02
+  308201B7 30820161 A0030201 02020102 300D0609 2A864886 F70D0101 05050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31313238 31333534 32335A17 
+  0D323431 31323731 33353432 335A306A 310B3009 06035504 06130252 55310F30 
+  0D060355 040A1306 4D6F7363 6F77310C 300A0603 55040B13 0356504E 310B3009 
+  06035504 03130252 32312F30 1006092A 864886F7 0D010902 16035232 38301B06 
+  092A8648 86F70D01 0908130E 3130302E 3230302E 3135302E 3334305C 300D0609 
+  2A864886 F70D0101 01050003 4B003048 024100BF 1CDC1ABE 72B27A45 F22FE461 
+  48DF4AD1 38A5A3F7 BF04537C 2BD83B58 AE3C2085 0835B5CA 6B79C847 1023128C 
+  73E47A52 DFD7F748 977A6184 1DB91957 AF727902 03010001 A34F304D 300B0603 
+  551D0F04 04030205 A0301F06 03551D23 04183016 80142B2F 81B2806D 492B15B8 
+  AF7782C1 9ADA87FA A3B6301D 0603551D 0E041604 14726048 08C9DEA2 53673631 
+  77BA8121 7E4102B6 65300D06 092A8648 86F70D01 01050500 03410005 D2872C46 
+  3DD0E034 08F6A72C A56242C0 4D5EA354 BB5F786C 0F8EADB5 E54D8CB3 DA00C58B 
+  2AACB4CD 08B3BC54 3EA94BAE 193360C3 A709B7B8 7D666CAA B9C490
+  	quit
+ certificate ca 01
+  3082016E 30820118 A0030201 02020101 300D0609 2A864886 F70D0101 04050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31313238 31333530 31345A17 
+  0D323631 31323731 33353031 345A300D 310B3009 06035504 03130243 41305C30 
+  0D06092A 864886F7 0D010101 0500034B 00304802 4100B372 D44C1A5E AD5C8EA0 
+  8A0C3167 53104D27 507C61A6 9C597E4E 6CAAE9F3 3C364712 E7D82F48 B11285AC 
+  7351AF05 24F571D0 06354FDE D6483982 03586525 80D30203 010001A3 63306130 
+  0F060355 1D130101 FF040530 030101FF 300E0603 551D0F01 01FF0404 03020186 
+  301F0603 551D2304 18301680 142B2F81 B2806D49 2B15B8AF 7782C19A DA87FAA3 
+  B6301D06 03551D0E 04160414 2B2F81B2 806D492B 15B8AF77 82C19ADA 87FAA3B6 
+  300D0609 2A864886 F70D0101 04050003 4100A8EC EB645932 F2DA52CA 883A4729 
+  75789D50 BECE2155 2125069A 51FBD9BF 69DF2641 10C4ECCA 5C71CF3C BA23FEAA 
+  CD43A349 740CF0FB 3FF07674 91AA9ABD 645E
+  	quit
+!
+redundancy
+!         
+!
+track 1 ip sla 1 reachability
+ delay down 30 up 30
+!
+track 2 ip sla 2 reachability
+ delay down 30 up 30
+!
+ip ssh version 1
+!
+policy-map test
+ class class-default
+  police cir 1024000 bc 192000 be 384000
+   exceed-action drop 
+   violate-action drop 
+!
+! 
+!
+!
+!
+!
+crypto isakmp policy 10
+ encr aes
+ hash sha256
+ group 5
+!
+!
+crypto ipsec transform-set IPSEC_TS esp-aes esp-sha-hmac 
+ mode transport
+!
+!
+crypto ipsec profile ipsec_prof
+ set transform-set IPSEC_TS 
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.0.0.28 255.255.255.255
+!
+interface Tunnel10
+ ip address 192.168.100.10 255.255.255.248
+ ip mtu 1400
+ ip nhrp map multicast 15.15.15.1
+ ip nhrp map 15.15.15.1 192.168.100.9
+ ip nhrp network-id 10
+ ip nhrp nhs 192.168.100.9
+ ip tcp adjust-mss 1360
+ tunnel source 100.200.150.34
+ tunnel destination 15.15.15.1
+ tunnel protection ipsec profile ipsec_prof
+!
+interface Ethernet0/0
+ description to Triada R26 eth0/1
+ ip address 100.200.150.22 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ description to Triada R25 eth0/3
+ ip address 100.200.150.34 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/2
+ no ip address
+!
+interface Ethernet0/2.100
+ description Managment
+ encapsulation dot1Q 100
+ ip address 172.18.0.1 255.255.255.252
+!
+interface Ethernet0/2.200
+ description for Clients dhcp
+ encapsulation dot1Q 200
+ ip address 192.168.2.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ ip policy route-map Balance
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no ip address
+ shutdown 
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+!
+router eigrp 1
+ network 172.18.0.0 0.0.0.3
+ network 192.168.2.0
+ network 192.168.100.8 0.0.0.7
+ passive-interface Ethernet0/0
+ passive-interface Ethernet0/1
+ passive-interface Ethernet0/2.200
+ passive-interface Ethernet0/2
+ eigrp router-id 28.28.28.1
+!
+ip forward-protocol nd
+!
+!         
+no ip http server
+no ip http secure-server
+ip nat inside source route-map map-fa0/0 interface Ethernet0/0 overload
+ip nat inside source route-map map-fa0/1 interface Ethernet0/1 overload
+ip route 0.0.0.0 0.0.0.0 100.200.150.33 10 track 1
+ip route 0.0.0.0 0.0.0.0 100.200.150.21 20 track 2
+!
+ip access-list extended PC30
+ permit ip host 192.168.2.2 any
+ip access-list extended PC31
+ permit ip host 192.168.2.3 any
+!
+!
+ip prefix-list 10 seq 5 permit 192.168.0.0/16
+ip prefix-list 10 seq 10 permit 172.16.0.0/12
+ip sla 1
+ icmp-echo 100.200.150.33 source-ip 100.200.150.34
+ threshold 1
+ timeout 2
+ frequency 4
+ip sla schedule 1 life forever start-time now
+ip sla 2
+ icmp-echo 100.200.150.21 source-ip 100.200.150.22
+ threshold 1
+ timeout 2
+ frequency 4
+ip sla schedule 2 life forever start-time now
+!
+route-map Balance permit 5
+ match ip address 100
+ set global
+!
+route-map Balance permit 10
+ match ip address PC30
+ set ip next-hop verify-availability 100.200.150.33 10 track 1
+ set ip next-hop verify-availability 100.200.150.21 20 track 2
+!
+route-map Balance permit 20
+ match ip address PC31
+ set ip next-hop verify-availability 100.200.150.21 10 track 2
+ set ip next-hop verify-availability 100.200.150.33 20 track 1
+!
+route-map map-fa0/1 permit 10
+ match ip address 1
+ match interface Ethernet0/1
+!         
+route-map map-fa0/0 permit 10
+ match ip address 1
+ match interface Ethernet0/0
+!
+!
+access-list 1 permit 192.168.2.0 0.0.0.255
+access-list 10 permit 192.168.0.0 0.0.253.255
+access-list 100 permit ip any 192.168.0.0 0.0.255.255
+access-list 100 permit ip any 172.16.0.0 0.1.255.255
+access-list 110 permit ip any any
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
+

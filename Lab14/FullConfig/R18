@@ -1,0 +1,247 @@
+Building configuration...
+
+Current configuration : 5834 bytes
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R18
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+no logging monitor
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!         
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!         
+crypto pki trustpoint VPN
+ enrollment url http://14.14.14.1:80
+ serial-number
+ subject-name CN=R2,OU=VPN,O=Moscow,C=RU
+ revocation-check none
+ rsakeypair VPN
+!
+!
+crypto pki certificate chain VPN
+ certificate 0A
+  30820273 3082021D A0030201 0202010A 300D0609 2A864886 F70D0101 05050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31323033 31333131 35375A17 
+  0D323431 32303231 33313135 375A305E 310B3009 06035504 06130252 55310F30 
+  0D060355 040A1306 4D6F7363 6F77310C 300A0603 55040B13 0356504E 310B3009 
+  06035504 03130252 32312330 0F060355 04051308 36373130 39313532 30100609 
+  2A864886 F70D0109 02160352 31383082 0122300D 06092A86 4886F70D 01010105 
+  00038201 0F003082 010A0282 010100BE 75495551 B535868F CD9B27C6 0CB9277D 
+  527E8525 16E2FB9D F5059D52 5CC930C9 F16B8C9D 7B54FBE9 C6238564 52382B44 
+  F606B9BF B0ECA74C B4BA54A5 BA3869FA 1C9DE57F 7CE29379 41379AB1 CE46B9C9 
+  E536D37A A6E57EF3 107685EC B7ED1BD4 1EF76BD9 A8650DA5 D7F8746B 763BB0D2 
+  BEA84A04 D45F6712 E4096E1B E4AE9360 CE984100 DD5CADEC 4B015ACE 3B84B795 
+  4E3B9AC1 8D2ABC93 77D9E4C0 6C0EBADA 6E9107E5 BC2C8501 62875D14 3FF4C839 
+  6D2E664E 14684D43 9A312047 D5FD429C 0C81A618 491ED083 DBC1C6E4 AC38C175 
+  CFB661CC 566DD6C6 9CF3ACA5 651A6F29 DF4C1793 110E424E 60CF7DDE 653F223E 
+  605EDA39 BF729BAE 8E9CF64B 5E641502 03010001 A34F304D 300B0603 551D0F04 
+  04030205 A0301F06 03551D23 04183016 80142B2F 81B2806D 492B15B8 AF7782C1 
+  9ADA87FA A3B6301D 0603551D 0E041604 149F1BAA 9C34B213 61916489 6B83E346 
+  21635D66 26300D06 092A8648 86F70D01 01050500 03410023 2807C279 503ABD30 
+  BD4AC64E 41AF6C45 A012B57B 0390E5D4 933B345D AEDCAF63 A142A5DE ED6246FA 
+  6C276FF4 6CBD2362 EC18C2A5 7403FF50 FA48BC48 2685AD
+  	quit
+ certificate ca 01
+  3082016E 30820118 A0030201 02020101 300D0609 2A864886 F70D0101 04050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31313238 31333530 31345A17 
+  0D323631 31323731 33353031 345A300D 310B3009 06035504 03130243 41305C30 
+  0D06092A 864886F7 0D010101 0500034B 00304802 4100B372 D44C1A5E AD5C8EA0 
+  8A0C3167 53104D27 507C61A6 9C597E4E 6CAAE9F3 3C364712 E7D82F48 B11285AC 
+  7351AF05 24F571D0 06354FDE D6483982 03586525 80D30203 010001A3 63306130 
+  0F060355 1D130101 FF040530 030101FF 300E0603 551D0F01 01FF0404 03020186 
+  301F0603 551D2304 18301680 142B2F81 B2806D49 2B15B8AF 7782C19A DA87FAA3 
+  B6301D06 03551D0E 04160414 2B2F81B2 806D492B 15B8AF77 82C19ADA 87FAA3B6 
+  300D0609 2A864886 F70D0101 04050003 4100A8EC EB645932 F2DA52CA 883A4729 
+  75789D50 BECE2155 2125069A 51FBD9BF 69DF2641 10C4ECCA 5C71CF3C BA23FEAA 
+  CD43A349 740CF0FB 3FF07674 91AA9ABD 645E
+  	quit
+!         
+redundancy
+!
+!
+! 
+!
+crypto ikev2 proposal PHASE1 
+ encryption aes-cbc-128
+ integrity md5
+ group 2
+!
+crypto ikev2 policy IKEV2 
+ proposal PHASE1
+!
+!
+crypto ikev2 profile PROFILE1
+ match address local interface Ethernet0/3
+ match identity remote address 0.0.0.0 
+ authentication remote rsa-sig
+ authentication local rsa-sig
+ pki trustpoint VPN
+!
+!
+!         
+crypto ipsec transform-set IPSEC_TS esp-aes esp-md5-hmac 
+ mode transport
+!
+!
+crypto ipsec profile ipsec_prof
+ set transform-set IPSEC_TS 
+ set ikev2-profile PROFILE1
+!
+!
+crypto map IPSEC 1 ipsec-isakmp 
+ set peer 100.200.100.1
+ set transform-set IPSEC_TS 
+ set pfs group5
+ set ikev2-profile PROFILE1
+ match address 101
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.0.0.18 255.255.255.255
+!         
+interface Loopback1
+ ip address 18.18.18.1 255.255.255.0
+!
+interface Tunnel1
+ ip address 192.168.100.2 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ tunnel source 18.18.18.1
+ tunnel destination 15.15.15.1
+!
+interface Ethernet0/0
+ description to R16 eth0/1
+ ip address 172.17.0.1 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ description to R17 eth0/1
+ ip address 172.17.0.5 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet0/2
+ description to Triada R24 eth0/3
+ ip address 100.200.150.14 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/3
+ description to Triada R26 eth0/3
+ ip address 100.200.150.18 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+ crypto map IPSEC
+!
+!
+router eigrp SPB
+ !
+ address-family ipv4 unicast autonomous-system 2042
+  !
+  af-interface Ethernet0/0
+   summary-address 0.0.0.0 0.0.0.0
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   summary-address 0.0.0.0 0.0.0.0
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.18 0.0.0.0
+  network 172.17.0.0
+ exit-address-family
+!
+!
+router eigrp 1
+ network 192.168.100.0 0.0.0.3
+ redistribute eigrp 2042 metric 20 30 100 200 1400
+ eigrp router-id 18.18.18.1
+!
+router bgp 2042
+ bgp log-neighbor-changes
+ network 18.18.18.0 mask 255.255.255.0
+ neighbor 100.200.150.13 remote-as 520
+ neighbor 100.200.150.13 route-map R18-out out
+ neighbor 100.200.150.17 remote-as 520
+ neighbor 100.200.150.17 route-map R18-out out
+ maximum-paths 2
+!         
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip nat pool to-internet 18.18.18.2 18.18.18.6 netmask 255.255.255.0
+ip nat inside source list 1 pool to-internet overload
+!
+!
+ip prefix-list 1 seq 5 permit 18.18.18.0/24
+!
+route-map R18-out permit 10
+ match ip address prefix-list 1
+!
+!
+access-list 1 permit 192.168.1.0 0.0.0.255
+access-list 101 permit gre host 18.18.18.1 host 15.15.15.1
+!
+control-plane
+!
+!
+!
+!         
+!
+!
+!
+!
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
+

@@ -1,0 +1,198 @@
+Building configuration...
+
+Current configuration : 4022 bytes
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R27
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!         
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!         
+crypto pki trustpoint VPN
+ enrollment url http://14.14.14.1:80
+ ip-address 100.200.150.30
+ subject-name CN=R2,OU=VPN,O=Moscow,C=RU
+ revocation-check none
+ rsakeypair VPN
+!
+!
+crypto pki certificate chain VPN
+ certificate 03
+  308201B7 30820161 A0030201 02020103 300D0609 2A864886 F70D0101 05050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31313238 31343534 33385A17 
+  0D323431 31323731 34353433 385A306A 310B3009 06035504 06130252 55310F30 
+  0D060355 040A1306 4D6F7363 6F77310C 300A0603 55040B13 0356504E 310B3009 
+  06035504 03130252 32312F30 1006092A 864886F7 0D010902 16035232 37301B06 
+  092A8648 86F70D01 0908130E 3130302E 3230302E 3135302E 3330305C 300D0609 
+  2A864886 F70D0101 01050003 4B003048 0241009A 434A91AD 530D76EC 2254F042 
+  A92EA12C 0A965154 6995E438 43EA0837 4AB8C8EF 22A8550A 9872E46E 73FB1F3A 
+  AE2559CC 7FC2102E 81844B29 B2956F2F AA18E902 03010001 A34F304D 300B0603 
+  551D0F04 04030205 A0301F06 03551D23 04183016 80142B2F 81B2806D 492B15B8 
+  AF7782C1 9ADA87FA A3B6301D 0603551D 0E041604 1485E43D 32F264E1 5D797332 
+  CCB74DE6 110CDEBA F7300D06 092A8648 86F70D01 01050500 034100B0 25ABEA01 
+  E77C1845 D2D6B80E C021224A D0A93720 85CDE993 DDC3F1EA 1076EA98 9354E8A7 
+  22E0FC85 96D44E76 CCBE1A0D B8C46E0F B1ACE5BE 55D97B7D 585716
+  	quit
+ certificate ca 01
+  3082016E 30820118 A0030201 02020101 300D0609 2A864886 F70D0101 04050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31313238 31333530 31345A17 
+  0D323631 31323731 33353031 345A300D 310B3009 06035504 03130243 41305C30 
+  0D06092A 864886F7 0D010101 0500034B 00304802 4100B372 D44C1A5E AD5C8EA0 
+  8A0C3167 53104D27 507C61A6 9C597E4E 6CAAE9F3 3C364712 E7D82F48 B11285AC 
+  7351AF05 24F571D0 06354FDE D6483982 03586525 80D30203 010001A3 63306130 
+  0F060355 1D130101 FF040530 030101FF 300E0603 551D0F01 01FF0404 03020186 
+  301F0603 551D2304 18301680 142B2F81 B2806D49 2B15B8AF 7782C19A DA87FAA3 
+  B6301D06 03551D0E 04160414 2B2F81B2 806D492B 15B8AF77 82C19ADA 87FAA3B6 
+  300D0609 2A864886 F70D0101 04050003 4100A8EC EB645932 F2DA52CA 883A4729 
+  75789D50 BECE2155 2125069A 51FBD9BF 69DF2641 10C4ECCA 5C71CF3C BA23FEAA 
+  CD43A349 740CF0FB 3FF07674 91AA9ABD 645E
+  	quit
+!
+redundancy
+!
+!
+ip ssh version 1
+! 
+!         
+!
+!
+!
+crypto isakmp policy 10
+ encr aes
+ hash sha256
+ group 5
+!
+!
+crypto ipsec transform-set IPSEC_TS esp-aes esp-sha-hmac 
+ mode transport
+!
+!
+crypto ipsec profile ipsec_prof
+ set transform-set IPSEC_TS 
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 192.168.3.1 255.255.255.0
+!
+interface Tunnel10
+ ip address 192.168.100.11 255.255.255.248
+ ip mtu 1400
+ ip nhrp map multicast 15.15.15.1
+ ip nhrp map 15.15.15.1 192.168.100.9
+ ip nhrp network-id 10
+ ip nhrp nhs 192.168.100.9
+ ip tcp adjust-mss 1360
+ tunnel source 100.200.150.30
+ tunnel destination 15.15.15.1
+ tunnel protection ipsec profile ipsec_prof
+!
+interface Ethernet0/0
+ description to Triada R25 eth0/1
+ ip address 100.200.150.30 255.255.255.252
+!
+interface Ethernet0/1
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+!         
+router eigrp 1
+ network 192.168.3.0
+ network 192.168.100.8 0.0.0.7
+ eigrp router-id 27.27.27.1
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 100.200.150.29
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!         
+!
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
+

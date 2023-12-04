@@ -1,0 +1,214 @@
+Building configuration...
+
+Current configuration : 3872 bytes
+!
+! No configuration change since last restart
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R14
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+!
+no aaa new-model
+clock timezone UTC 3 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip domain name Moscow-cert.ru
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!         
+!
+!
+!
+!
+crypto pki server CA
+ no database archive
+!
+crypto pki trustpoint CA
+ revocation-check crl
+ rsakeypair CA
+!
+!
+crypto pki certificate chain CA
+ certificate ca 01
+  3082016E 30820118 A0030201 02020101 300D0609 2A864886 F70D0101 04050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31313238 31333530 31345A17 
+  0D323631 31323731 33353031 345A300D 310B3009 06035504 03130243 41305C30 
+  0D06092A 864886F7 0D010101 0500034B 00304802 4100B372 D44C1A5E AD5C8EA0 
+  8A0C3167 53104D27 507C61A6 9C597E4E 6CAAE9F3 3C364712 E7D82F48 B11285AC 
+  7351AF05 24F571D0 06354FDE D6483982 03586525 80D30203 010001A3 63306130 
+  0F060355 1D130101 FF040530 030101FF 300E0603 551D0F01 01FF0404 03020186 
+  301F0603 551D2304 18301680 142B2F81 B2806D49 2B15B8AF 7782C19A DA87FAA3 
+  B6301D06 03551D0E 04160414 2B2F81B2 806D492B 15B8AF77 82C19ADA 87FAA3B6 
+  300D0609 2A864886 F70D0101 04050003 4100A8EC EB645932 F2DA52CA 883A4729 
+  75789D50 BECE2155 2125069A 51FBD9BF 69DF2641 10C4ECCA 5C71CF3C BA23FEAA 
+  CD43A349 740CF0FB 3FF07674 91AA9ABD 645E
+  	quit
+!
+redundancy
+!
+!
+ip ssh version 1
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.0.0.14 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Loopback1
+ ip address 14.14.14.1 255.255.255.0
+!
+interface Ethernet0/0
+ description to R12 eth0/2
+ ip address 172.16.0.10 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 10
+!
+interface Ethernet0/1
+ description to R13 e0/3
+ ip address 172.16.0.22 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 10
+!
+interface Ethernet0/2
+ description to R22 e0/0
+ ip address 100.200.0.1 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/3
+ description to R19 e0/0
+ ip address 172.16.0.25 255.255.255.252
+ ip ospf 1 area 101
+!
+interface Ethernet1/0
+ description to R15 eth1/0
+ ip address 172.16.0.33 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+!
+interface Ethernet1/1
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+!         
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 14.14.14.14
+ area 10 nssa default-information-originate
+ area 101 stub no-summary
+!
+router bgp 1001
+ bgp log-neighbor-changes
+ neighbor 10.0.0.15 remote-as 1001
+ neighbor 10.0.0.15 update-source Loopback0
+ neighbor 100.200.0.2 remote-as 101
+ !
+ address-family ipv4
+  network 14.14.14.0 mask 255.255.255.0
+  neighbor 10.0.0.15 activate
+  neighbor 10.0.0.15 next-hop-self
+  neighbor 100.200.0.2 activate
+  neighbor 100.200.0.2 send-community both
+  neighbor 100.200.0.2 soft-reconfiguration inbound
+  neighbor 100.200.0.2 route-map COMtoR22 out
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip bgp-community new-format
+ip as-path access-list 10 permit ^$
+ip as-path access-list 20 deny .*
+!
+ip http server
+no ip http secure-server
+ip nat inside source list 1 interface Loopback1 overload
+!
+!
+route-map COMtoR22 permit 10
+ match as-path 10
+ set community 1001:103
+!
+route-map COMtoR22 permit 20
+ match as-path 20
+!
+route-map SECOND permit 10
+ set as-path prepend 101 101 101
+!         
+!
+access-list 1 permit 192.168.0.0 0.0.0.255
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 30 0
+ password cisco
+ login
+ transport input telnet
+!
+ntp update-calendar
+ntp server 10.0.0.12
+ntp server 10.0.0.13
+!
+end
+

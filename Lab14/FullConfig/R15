@@ -1,0 +1,306 @@
+R15#show run 
+Building configuration...
+
+Current configuration : 7234 bytes
+!
+! No configuration change since last restart
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R15
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+!
+no aaa new-model
+clock timezone UTC 3 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!         
+!
+!
+!
+crypto pki trustpoint VPN
+ enrollment url http://14.14.14.1:80
+ serial-number
+ subject-name CN=R2,OU=VPN,O=Moscow,C=RU
+ revocation-check none
+ rsakeypair VPN
+!
+!
+crypto pki certificate chain VPN
+ certificate 08
+  30820273 3082021D A0030201 02020108 300D0609 2A864886 F70D0101 05050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31323033 31333036 35345A17 
+  0D323431 32303231 33303635 345A305E 310B3009 06035504 06130252 55310F30 
+  0D060355 040A1306 4D6F7363 6F77310C 300A0603 55040B13 0356504E 310B3009 
+  06035504 03130252 32312330 0F060355 04051308 36373130 39313034 30100609 
+  2A864886 F70D0109 02160352 31353082 0122300D 06092A86 4886F70D 01010105 
+  00038201 0F003082 010A0282 010100AF D7F7AE7A DECF2B25 DCC0D41E 04601FCD 
+  0F40866F C0831FFF 472D49EC 4996CABD 816737D8 CB3609AE A007BA69 4C8348C4 
+  46BF01F6 54BED732 FB437EF6 EC8C7272 DAEF272F 15957237 8F76214D 9AE65A02 
+  B15957D6 AF440812 215A66A4 2B9E0204 E034BD69 FC0D6F46 1D3EE6A0 C518EA05 
+  29C68466 C54E7FC1 1EB3C136 F39399A7 6308C238 8BA6160C A265B775 51475873 
+  76E56F7C CB80177B 49BC9BFB 63785ABF 6A2BC1B6 796F82E9 D391AF40 682B2B07 
+  2D9E2CD2 DDD8377F E8A38358 FBFE5C09 D2E48CD2 5C365908 ECC0839D 3803F0AE 
+  DCD2ED2C 2DD276EF D2E3FC85 1E02F656 CDF0940C 8C968C3F 84B842E6 B6A4CCBC 
+  B7E052D6 22D47CC9 7EB931FF 10E91102 03010001 A34F304D 300B0603 551D0F04 
+  04030205 A0301F06 03551D23 04183016 80142B2F 81B2806D 492B15B8 AF7782C1 
+  9ADA87FA A3B6301D 0603551D 0E041604 145124AC 6C1BD569 FE13CB1C 8CDC90FF 
+  8163C8F8 61300D06 092A8648 86F70D01 01050500 03410078 E1DE404C 0516BD24 
+  18049C57 2569F332 8B13FA43 6F20C615 6A933DDC 2BB4D2E7 3D7C4167 9C94F202 
+  B05F1897 358ED0D0 4EBF73B3 12C58EAD B4916017 29E073
+  	quit
+ certificate ca 01
+  3082016E 30820118 A0030201 02020101 300D0609 2A864886 F70D0101 04050030 
+  0D310B30 09060355 04031302 4341301E 170D3233 31313238 31333530 31345A17 
+  0D323631 31323731 33353031 345A300D 310B3009 06035504 03130243 41305C30 
+  0D06092A 864886F7 0D010101 0500034B 00304802 4100B372 D44C1A5E AD5C8EA0 
+  8A0C3167 53104D27 507C61A6 9C597E4E 6CAAE9F3 3C364712 E7D82F48 B11285AC 
+  7351AF05 24F571D0 06354FDE D6483982 03586525 80D30203 010001A3 63306130 
+  0F060355 1D130101 FF040530 030101FF 300E0603 551D0F01 01FF0404 03020186 
+  301F0603 551D2304 18301680 142B2F81 B2806D49 2B15B8AF 7782C19A DA87FAA3 
+  B6301D06 03551D0E 04160414 2B2F81B2 806D492B 15B8AF77 82C19ADA 87FAA3B6 
+  300D0609 2A864886 F70D0101 04050003 4100A8EC EB645932 F2DA52CA 883A4729 
+  75789D50 BECE2155 2125069A 51FBD9BF 69DF2641 10C4ECCA 5C71CF3C BA23FEAA 
+  CD43A349 740CF0FB 3FF07674 91AA9ABD 645E
+  	quit
+!
+redundancy
+!
+!
+! 
+!
+crypto ikev2 proposal PHASE1 
+ encryption aes-cbc-128
+ integrity md5
+ group 2
+!
+crypto ikev2 policy IKEV2 
+ proposal PHASE1
+!
+!
+crypto ikev2 profile PROFILE1
+ match address local interface Ethernet0/2
+ match identity remote address 0.0.0.0 
+ authentication remote rsa-sig
+ authentication local rsa-sig
+ pki trustpoint VPN
+!
+!
+crypto isakmp policy 10
+ encr aes
+ hash sha256
+ group 5
+!
+!
+crypto ipsec transform-set IPSEC_TS esp-aes esp-md5-hmac 
+ mode transport
+crypto ipsec transform-set DMVPN_TS esp-aes esp-sha-hmac 
+ mode transport
+!
+!
+crypto ipsec profile ipsec_prof
+ set transform-set DMVPN_TS 
+!
+!
+crypto map IPSEC 1 ipsec-isakmp 
+ set peer 100.200.150.18
+ set transform-set IPSEC_TS 
+ set pfs group5
+ set ikev2-profile PROFILE1
+ match address 101
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.0.0.15 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Loopback1
+ ip address 15.15.15.1 255.255.255.0
+!
+interface Tunnel1
+ ip address 192.168.100.1 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ tunnel source 15.15.15.1
+ tunnel destination 18.18.18.1
+!
+interface Tunnel10
+ ip address 192.168.100.9 255.255.255.248
+ no ip redirects
+ ip mtu 1400
+ no ip next-hop-self eigrp 1
+ no ip split-horizon eigrp 1
+ ip nhrp map multicast dynamic
+ ip nhrp network-id 10
+ ip tcp adjust-mss 1360
+ tunnel source 15.15.15.1
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile ipsec_prof
+!
+interface Ethernet0/0
+ ip address 172.16.0.18 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 10
+!
+interface Ethernet0/1
+ description to R12 eth0/3
+ ip address 172.16.0.14 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 10
+!         
+interface Ethernet0/2
+ ip address 100.200.100.1 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+ crypto map IPSEC
+!
+interface Ethernet0/3
+ ip address 172.16.0.29 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 102
+!
+interface Ethernet1/0
+ description to R14 eth1/0
+ ip address 172.16.0.34 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+!
+interface Ethernet1/1
+ no ip address
+ shutdown
+!         
+interface Ethernet1/2
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+!
+router eigrp 1
+ network 192.168.100.0 0.0.0.3
+ network 192.168.100.8 0.0.0.7
+ redistribute ospf 1 metric 10 20 100 200 1400
+ passive-interface Ethernet0/2
+ eigrp router-id 15.15.15.1
+!
+router ospf 1
+ router-id 15.15.15.15
+ area 10 nssa default-information-originate
+ area 102 filter-list prefix Area_101_blocking in
+ default-information originate
+!
+router bgp 1001
+ bgp log-neighbor-changes
+ bgp listen range 192.168.100.0/24 peer-group Moscow-HUB
+ neighbor 10.0.0.14 remote-as 1001
+ neighbor 10.0.0.14 update-source Loopback0
+ neighbor 100.200.100.2 remote-as 301
+ !
+ address-family ipv4
+  network 15.15.15.0 mask 255.255.255.0
+  neighbor 10.0.0.14 activate
+  neighbor 10.0.0.14 next-hop-self
+  neighbor 100.200.100.2 activate
+  neighbor 100.200.100.2 route-map MAIN in
+  neighbor 100.200.100.2 route-map FilterOut out
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ip as-path access-list 10 permit ^$
+ip as-path access-list 20 deny .*
+!
+no ip http server
+no ip http secure-server
+ip nat inside source list 1 interface Loopback1 overload
+ip nat inside source static 172.16.0.30 15.15.15.2
+ip nat inside source static tcp 172.16.0.26 23 15.15.15.3 23 extendable
+!
+!
+ip prefix-list Area102 seq 5 permit 172.16.0.28/30
+!
+ip prefix-list Area_101_blocking seq 5 deny 10.0.0.19/32
+ip prefix-list Area_101_blocking seq 10 deny 172.16.0.24/30
+ip prefix-list Area_101_blocking seq 15 permit 0.0.0.0/0 le 32
+!
+route-map MAIN permit 10
+ set local-preference 200
+!
+route-map Moscow-HUB permit 10
+!
+route-map FilterOut permit 10
+ match as-path 10
+!
+route-map FilterOut permit 20
+ match as-path 20
+!
+!
+access-list 1 permit 192.168.0.0 0.0.0.255
+access-list 101 permit gre host 15.15.15.1 host 18.18.18.1
+access-list 110 permit ip any any
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ password cisco
+ login
+ transport input telnet
+!
+ntp server 10.0.0.12
+ntp server 10.0.0.13
+!
+end
+
+
